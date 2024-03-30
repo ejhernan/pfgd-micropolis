@@ -918,6 +918,9 @@ public class Micropolis
 				makeMonster();
 			}
 			break;
+		case 9:
+			makePirates();
+			break;
 		}
 	}
 
@@ -2237,6 +2240,28 @@ public class Micropolis
 	}
 
 	public void makeEarthquake()
+	{
+		makeSound(centerMassX, centerMassY, Sound.EXPLOSION_LOW);
+		fireEarthquakeStarted();
+
+		sendMessageAt(MicropolisMessage.EARTHQUAKE_REPORT, centerMassX, centerMassY);
+		int time = PRNG.nextInt(701) + 300;
+		for (int z = 0; z < time; z++) {
+			int x = PRNG.nextInt(getWidth());
+			int y = PRNG.nextInt(getHeight());
+			assert testBounds(x, y);
+
+			if (isVulnerable(getTile(x, y))) {
+				if (PRNG.nextInt(4) != 0) {
+					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
+				} else {
+					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+				}
+			}
+		}
+	}
+	
+	public void makePirates()
 	{
 		makeSound(centerMassX, centerMassY, Sound.EXPLOSION_LOW);
 		fireEarthquakeStarted();
