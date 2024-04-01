@@ -68,9 +68,9 @@ public class TornadoSprite extends Sprite
 			}
 		}
 
-		int zz = city.PRNG.nextInt(CDx.length);
-		x += CDx[zz];
-		y += CDy[zz];
+//		int zz = city.PRNG.nextInt(CDx.length);
+//		x += CDx[zz];
+//		y += CDy[zz];
 
 		if (!city.testBounds(x/16, y/16)) {
 			// out of bounds

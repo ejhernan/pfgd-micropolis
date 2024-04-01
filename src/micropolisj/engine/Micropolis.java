@@ -1539,6 +1539,43 @@ public class Micropolis
 			}
 		}
 	}
+	void generatePirateShip()
+	{
+		int edge = PRNG.nextInt(4);
+
+		if (edge == 0) {
+			for (int x = 4; x < getWidth() - 2; x++) {
+				if (getTile(x,0) == CHANNEL) {
+					makePirateShipAt(x, 0, PirateShipSprite.NORTH_EDGE);
+					return;
+				}
+			}
+		}
+		else if (edge == 1) {
+			for (int y = 1; y < getHeight() - 2; y++) {
+				if (getTile(0,y) == CHANNEL) {
+					makePirateShipAt(0, y, PirateShipSprite.EAST_EDGE);
+					return;
+				}
+			}
+		}
+		else if (edge == 2) {
+			for (int x = 4; x < getWidth() - 2; x++) {
+				if (getTile(x, getHeight()-1) == CHANNEL) {
+					makePirateShipAt(x, getHeight()-1, PirateShipSprite.SOUTH_EDGE);
+					return;
+				}
+			}
+		}
+		else {
+			for (int y = 1; y < getHeight() - 2; y++) {
+				if (getTile(getWidth()-1, y) == CHANNEL) {
+					makePirateShipAt(getWidth()-1, y, PirateShipSprite.EAST_EDGE);
+					return;
+				}
+			}
+		}
+	}
 
 	Sprite getSprite(SpriteKind kind)
 	{
@@ -1559,6 +1596,13 @@ public class Micropolis
 		assert !hasSprite(SpriteKind.SHI);
 
 		sprites.add(new ShipSprite(this, xpos, ypos, edge));
+	}
+	
+	void makePirateShipAt(int xpos, int ypos, int edge)
+	{
+		assert !hasSprite(SpriteKind.PIR);
+
+		sprites.add(new PirateShipSprite(this, xpos, ypos, edge));
 	}
 
 	void generateCopter(int xpos, int ypos)
@@ -2263,25 +2307,36 @@ public class Micropolis
 	
 	public void makePirates()
 	{
-		makeSound(centerMassX, centerMassY, Sound.EXPLOSION_LOW);
-		fireEarthquakeStarted();
+		PirateShipSprite ship = (PirateShipSprite) getSprite(SpriteKind.PIR);
+		generatePirateShip();
+		sendMessage(MicropolisMessage.PIRATE_REPORT);
+//		if (ship != null) {
+			// already have a monster in town
+//			ship.soundCount = 1;
+//			ship.count = 1000;
+//			ship.flag = false;
+//			ship.destX = pollutionMaxLocationX;
+//			ship.destY = pollutionMaxLocationY;
+//			return;
+//		}
 
-		sendMessageAt(MicropolisMessage.EARTHQUAKE_REPORT, centerMassX, centerMassY);
-		int time = PRNG.nextInt(701) + 300;
-		for (int z = 0; z < time; z++) {
-			int x = PRNG.nextInt(getWidth());
-			int y = PRNG.nextInt(getHeight());
-			assert testBounds(x, y);
+		// try to find a suitable starting spot for monster
 
-			if (isVulnerable(getTile(x, y))) {
-				if (PRNG.nextInt(4) != 0) {
-					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
-				} else {
-					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+//		else {
+//			generateShip();
+//			for (int i = 0; i < 300; i++) {
+//				int x = PRNG.nextInt(getWidth() - 19) + 10;
+//				int y = PRNG.nextInt(getHeight() - 9) + 5;
+//				int t = getTile(x, y);
+//				if (t == RIVER) {
+//					makeShipAt(x, y, t);
+//					return;
 				}
-			}
-		}
-	}
+//			}
+//		}
+//	}
+
+			
 
 	void setFire()
 	{
