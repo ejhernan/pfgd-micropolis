@@ -2310,31 +2310,21 @@ public class Micropolis
 		PirateShipSprite ship = (PirateShipSprite) getSprite(SpriteKind.PIR);
 		generatePirateShip();
 		sendMessage(MicropolisMessage.PIRATE_REPORT);
-//		if (ship != null) {
-			// already have a monster in town
-//			ship.soundCount = 1;
-//			ship.count = 1000;
-//			ship.flag = false;
-//			ship.destX = pollutionMaxLocationX;
-//			ship.destY = pollutionMaxLocationY;
-//			return;
-//		}
+		int time = PRNG.nextInt(701) + 300;
+		for (int z = 0; z < time; z++) {
+			int x = PRNG.nextInt(getWidth());
+			int y = PRNG.nextInt(getHeight());
+			assert testBounds(x, y);
 
-		// try to find a suitable starting spot for monster
-
-//		else {
-//			generateShip();
-//			for (int i = 0; i < 300; i++) {
-//				int x = PRNG.nextInt(getWidth() - 19) + 10;
-//				int y = PRNG.nextInt(getHeight() - 9) + 5;
-//				int t = getTile(x, y);
-//				if (t == RIVER) {
-//					makeShipAt(x, y, t);
-//					return;
-				}
-//			}
-//		}
-//	}
+			if (isVulnerable(getTile(x, y))) {
+//				if (PRNG.nextInt(4) != 0) {
+//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
+//				} else {
+				setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+//				}
+			}
+		}
+	}
 
 			
 
