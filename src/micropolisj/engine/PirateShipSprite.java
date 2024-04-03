@@ -10,6 +10,8 @@ package micropolisj.engine;
 
 import static micropolisj.engine.TileConstants.*;
 
+import java.util.Random;
+
 /**
  * Implements the pirate ship.
  * The pirate ship is created if the pirates disaster occurs.
@@ -29,6 +31,8 @@ public class PirateShipSprite extends Sprite
 	int count;
 	int soundCount;
 	int timer;
+	int damageTimer;
+	boolean flag;
 
 	public static final int NORTH_EDGE = 5;
 	public static final int EAST_EDGE = 7;
@@ -48,12 +52,22 @@ public class PirateShipSprite extends Sprite
 		this.newDir = edge;
 		this.dir = 10;
 		this.count = 1;
-		this.timer = 1000;
+		this.timer = 1100;
+		this.damageTimer = 200;
+		this.flag = false;
 	}
 
+	public static int randomTile(int min, int max) {
+		Random rand = new Random();
+		return rand.nextInt((max-min), max + 1);
+	}
+	
 	@Override
 	public void moveImpl()
-	{
+	{	
+		final Random PRNG = new Random();
+
+		
 		int t = RIVER;
 
 		this.soundCount--;
@@ -131,7 +145,30 @@ public class PirateShipSprite extends Sprite
 			if (this.timer <= 0) {
 				explodeSprite();
 			}
-		}	
+		}
+		if (this.damageTimer > 0) {
+			this.damageTimer--;
+			if (this.damageTimer <= 0) {
+				city.makeSound(x/16,y/16,Sound.MONSTER);
+				for (int z = 0; z < 10; z++) {
+//					int x = PRNG.nextInt(city.getWidth());
+//					int y = PRNG.nextInt(city.getHeight());
+					int x = randomTile((this.x/16)-8, (this.x/16)+8);
+					int y = randomTile((this.y/16)-8, (this.y/16)+8);
+					assert city.testBounds(x, y);
+			
+					if (isVulnerable(city.getTile(x, y))) {
+			//				if (PRNG.nextInt(4) != 0) {
+			//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
+			//				} else {
+							city.setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+					} else {
+						city.setTile(x, y, RUBBLE);
+					}
+				this.damageTimer = 200;	
+				}
+			}
+		}
 	}
 	
 

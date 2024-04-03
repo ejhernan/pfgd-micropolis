@@ -2310,20 +2310,26 @@ public class Micropolis
 		PirateShipSprite ship = (PirateShipSprite) getSprite(SpriteKind.PIR);
 		generatePirateShip();
 		sendMessage(MicropolisMessage.PIRATE_REPORT);
-		int time = PRNG.nextInt(701) + 300;
-		for (int z = 0; z < time; z++) {
-			int x = PRNG.nextInt(getWidth());
-			int y = PRNG.nextInt(getHeight());
-			assert testBounds(x, y);
+//		if (ship != null) {
+//			// already have pirates in town
 
-			if (isVulnerable(getTile(x, y))) {
-//				if (PRNG.nextInt(4) != 0) {
-//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
-//				} else {
-				setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+		int time = PRNG.nextInt(701) + 300;
+//		for (int z = 0; z < time; z++) {
+//			int x = PRNG.nextInt(getWidth());
+//			int y = PRNG.nextInt(getHeight());
+//			assert testBounds(x, y);
+//	
+//			if (isVulnerable(getTile(x, y))) {
+//	//				if (PRNG.nextInt(4) != 0) {
+//	//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
+//	//				} else {
+//					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+//	//				}
 //				}
-			}
-		}
+//		}
+//		if (ship.flag == true) {
+//			makeTornado();
+//		}
 	}
 
 			
