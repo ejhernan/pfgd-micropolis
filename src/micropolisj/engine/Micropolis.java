@@ -894,7 +894,7 @@ public class Micropolis
 		if (PRNG.nextInt(DisChance[gameLevel]+1) != 0)
 			return;
 
-		switch (PRNG.nextInt(9))
+		switch (PRNG.nextInt(10))
 		{
 		case 0:
 		case 1:
@@ -1570,7 +1570,7 @@ public class Micropolis
 		else {
 			for (int y = 1; y < getHeight() - 2; y++) {
 				if (getTile(getWidth()-1, y) == CHANNEL) {
-					makePirateShipAt(getWidth()-1, y, PirateShipSprite.EAST_EDGE);
+					makePirateShipAt(getWidth()-1, y, PirateShipSprite.WEST_EDGE);
 					return;
 				}
 			}
@@ -2307,30 +2307,10 @@ public class Micropolis
 	
 	public void makePirates()
 	{
-		PirateShipSprite ship = (PirateShipSprite) getSprite(SpriteKind.PIR);
 		generatePirateShip();
 		sendMessage(MicropolisMessage.PIRATE_REPORT);
-//		if (ship != null) {
-//			// already have pirates in town
-
-		int time = PRNG.nextInt(701) + 300;
-//		for (int z = 0; z < time; z++) {
-//			int x = PRNG.nextInt(getWidth());
-//			int y = PRNG.nextInt(getHeight());
-//			assert testBounds(x, y);
-//	
-//			if (isVulnerable(getTile(x, y))) {
-//	//				if (PRNG.nextInt(4) != 0) {
-//	//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
-//	//				} else {
-//					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
-//	//				}
-//				}
-//		}
-//		if (ship.flag == true) {
-//			makeTornado();
-//		}
-	}
+		makeSound(0, 0, Sound.PIRATE);
+		}
 
 			
 

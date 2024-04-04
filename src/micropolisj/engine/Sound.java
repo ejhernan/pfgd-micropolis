@@ -30,6 +30,8 @@ public enum Sound
 	HONKHONK_HI   ("honkhonk-hi"),
 	SIREN         ("siren"),
 	HEAVYTRAFFIC  ("heavytraffic"),
+	PIRATE        ("pirate-arr"),
+	CANNONS       ("cannon-fire"),
 	MONSTER       ("zombie-roar-5");
 
 	String wavName;

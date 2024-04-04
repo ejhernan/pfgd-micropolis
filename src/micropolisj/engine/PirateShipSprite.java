@@ -52,14 +52,18 @@ public class PirateShipSprite extends Sprite
 		this.newDir = edge;
 		this.dir = 10;
 		this.count = 1;
-		this.timer = 1100;
 		this.damageTimer = 200;
 		this.flag = false;
+		if (engine.seaportCount < 5) {
+			this.timer = 1100 - 160 * engine.seaportCount;
+		} else {
+			this.timer = 350;
+		}
 	}
 
 	public static int randomTile(int min, int max) {
-		Random rand = new Random();
-		return rand.nextInt((max-min), max + 1);
+		Random random = new Random();
+		return random.nextInt(max-min) + min;
 	}
 	
 	@Override
@@ -73,7 +77,7 @@ public class PirateShipSprite extends Sprite
 		this.soundCount--;
 		if (this.soundCount <= 0) {
 			if (city.PRNG.nextInt(4) == 0) {
-				city.makeSound(x/16,y/16,Sound.HONKHONK_LOW);
+				city.makeSound(x/16,y/16,Sound.PIRATE);
 			}
 			this.soundCount = 200;
 		}
@@ -146,27 +150,28 @@ public class PirateShipSprite extends Sprite
 				explodeSprite();
 			}
 		}
+
 		if (this.damageTimer > 0) {
 			this.damageTimer--;
 			if (this.damageTimer <= 0) {
-				city.makeSound(x/16,y/16,Sound.MONSTER);
-				for (int z = 0; z < 10; z++) {
-//					int x = PRNG.nextInt(city.getWidth());
-//					int y = PRNG.nextInt(city.getHeight());
-					int x = randomTile((this.x/16)-8, (this.x/16)+8);
-					int y = randomTile((this.y/16)-8, (this.y/16)+8);
-					assert city.testBounds(x, y);
-			
-					if (isVulnerable(city.getTile(x, y))) {
-			//				if (PRNG.nextInt(4) != 0) {
-			//					setTile(x, y, (char)(RUBBLE + PRNG.nextInt(4)));
-			//				} else {
+				city.makeSound(x/16,y/16,Sound.CANNONS);
+				for (int z = 0; z < 15;) {
+					int x = randomTile(this.x/16-11, this.x/16+11);
+					int y = randomTile(this.y/16-11, this.y/16+11);
+					if ((4 < x && x < city.getWidth()-4 ) && (4 < y && y < city.getHeight()-4) && (x != this.x && y != this.y)) {
+						if (isDozeable(city.getTile(x, y))) {
+							z+=1;
+						}
+						if (isVulnerable(city.getTile(x, y))) {
 							city.setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
-					} else {
-						city.setTile(x, y, RUBBLE);
-					}
-				this.damageTimer = 200;	
+						} else {
+							if (isDozeable(city.getTile(x, y))){
+								city.setTile(x, y, RUBBLE);
+							}
+						}
+					}	
 				}
+				this.damageTimer = 200;	
 			}
 		}
 	}
